@@ -1,13 +1,14 @@
-name: Build and deploy Java project to Azure Function App - venkat-func
+name: Deploy Azure Functions
 
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 env:
-  AZURE_FUNCTIONAPP_NAME: venkat-func
+  AZURE_FUNCTIONAPP_NAME: your-function-app-name
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'
   JAVA_VERSION: '11'
 
 jobs:
@@ -15,33 +16,33 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@v4
 
-      - name: Set up Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: ${{ env.JAVA_VERSION }}
+    - name: Setup Java Sdk ${{ env.JAVA_VERSION }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: 'microsoft'
 
-      - name: Build with Maven
-        run: |
-          mvn clean package
-          # Verify Azure Functions package structure
-          ls -lR target/azure-functions/${{ env.AZURE_FUNCTIONAPP_NAME }}
+    - name: 'Restore Project Dependencies Using Mvn'
+      shell: bash
+      run: |
+        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+        mvn clean package
+        popd
 
-      - name: Deploy to Azure Functions
-        uses: Azure/functions-action@v1
-        with:
-          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-          package: target/azure-functions/${{ env.AZURE_FUNCTIONAPP_NAME }}
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_11AD4101082542F8995BD50F7BA3FBE5 }}
-          scm-do-build-during-deployment: false
-          enable-oryx-build: false
-          respect-pom-xml: false  # Required for Flex Consumption plans
-          respect-funcignore: true
+    - name: 'Run Tests'
+      shell: bash
+      run: |
+        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+        mvn test
+        popd
 
-      - name: Verify deployment
-        run: |
-          echo "Function URL: https://${{ env.AZURE_FUNCTIONAPP_NAME }}.azurewebsites.net/api/PostgresExample"
-          curl -s https://${{ env.AZURE_FUNCTIONAPP_NAME }}.azurewebsites.net/api/PostgresExample
+    - name: 'Run Azure Functions Action'
+      uses: Azure/functions-action@v1
+      id: fa
+      with:
+        app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+        package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/target/azure-functions/${{ env.AZURE_FUNCTIONAPP_NAME }}'
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
