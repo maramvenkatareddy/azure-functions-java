@@ -40,10 +40,8 @@ jobs:
           enable-oryx-build: false
           respect-pom-xml: false  # Required for Flex Consumption plans
           respect-funcignore: true
-          verbose: true
 
-      # Optional: Post-deployment verification
       - name: Verify deployment
         run: |
           echo "Function URL: https://${{ env.AZURE_FUNCTIONAPP_NAME }}.azurewebsites.net/api/PostgresExample"
-          # curl -s https://${{ env.AZURE_FUNCTIONAPP_NAME }}.azurewebsites.net/api/PostgresExample
+          curl -s https://${{ env.AZURE_FUNCTIONAPP_NAME }}.azurewebsites.net/api/PostgresExample
