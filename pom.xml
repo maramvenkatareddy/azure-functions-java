@@ -49,11 +49,26 @@
                     <appName>venkat-func</appName>
                     <resourceGroup>venkat-rg</resourceGroup>
                     <region>CentralIndia</region>
+                    <deploymentType>flexconsumption</deploymentType>
                     <runtime>
                         <os>linux</os>
-                        <javaVersion>11</javaVersion>
+                        <javaVersion>${java.version}</javaVersion>
                     </runtime>
+                    <appSettings>
+                        <property>
+                            <name>FUNCTIONS_EXTENSION_VERSION</name>
+                            <value>~4</value>
+                        </property>
+                    </appSettings>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>package-functions</id>
+                        <goals>
+                            <goal>package</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
