@@ -1,0 +1,10 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "java",
+    "POSTGRES_URL": "jdbc:postgresql://venkat-db.postgres.database.azure.com:5432/venkatdb?sslmode=require",
+    "POSTGRES_USER": "venkat",
+    "POSTGRES_PASSWORD": "15A91a35333537@"
+  }
+}
