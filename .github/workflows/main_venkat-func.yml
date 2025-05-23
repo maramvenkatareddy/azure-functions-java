@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  AZURE_FUNCTIONAPP_NAME: your-function-app-name
+  AZURE_FUNCTIONAPP_NAME: azure-functions-postgres
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'
   JAVA_VERSION: '11'
 
