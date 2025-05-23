@@ -46,9 +46,9 @@
                 <artifactId>azure-functions-maven-plugin</artifactId>
                 <version>${azure.functions.maven.plugin.version}</version>
                 <configuration>
-                    <appName>FUNCTION_APP_NAME</appName>
-                    <resourceGroup>RESOURCE_GROUP_NAME</resourceGroup>
-                    <region>REGION</region>
+                    <appName>venkat-func</appName>
+                    <resourceGroup>venkat-rg</resourceGroup>
+                    <region>CentralIndia</region>
                     <runtime>
                         <os>linux</os>
                         <javaVersion>11</javaVersion>
