@@ -5,16 +5,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>azure-function-postgres</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>azure-functions-postgres</artifactId>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>11</java.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <azure.functions.maven.plugin.version>1.18.0</azure.functions.maven.plugin.version>
-        <azure.functions.java.library.version>2.0.1</azure.functions.java.library.version>
-        <postgresql.driver.version>42.3.1</postgresql.driver.version>
+        <azure.functions.java.library.version>2.2.0</azure.functions.java.library.version>
+        <functionAppName>your-function-app-name</functionAppName>
     </properties>
 
     <dependencies>
@@ -23,10 +23,40 @@
             <artifactId>azure-functions-java-library</artifactId>
             <version>${azure.functions.java.library.version}</version>
         </dependency>
+        
+        <!-- PostgreSQL JDBC Driver -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>${postgresql.driver.version}</version>
+            <version>42.5.4</version>
+        </dependency>
+        
+        <!-- JSON Processing -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.15.2</version>
+        </dependency>
+        
+        <!-- HikariCP Connection Pool -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>5.0.1</version>
+        </dependency>
+
+        <!-- Test Dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.9.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.1.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -35,24 +65,25 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.11.0</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
+            
             <plugin>
                 <groupId>com.microsoft.azure</groupId>
                 <artifactId>azure-functions-maven-plugin</artifactId>
                 <version>${azure.functions.maven.plugin.version}</version>
                 <configuration>
-                    <appName>venkat-func</appName>
+                    <schemaVersion>2.0</schemaVersion>
                     <resourceGroup>venkat-rg</resourceGroup>
-                    <region>CentralIndia</region>
-                    <deploymentType>flexconsumption</deploymentType>
+                    <appName>venkat-func</appName>
+                    <region>Central India</region>
                     <runtime>
                         <os>linux</os>
-                        <javaVersion>${java.version}</javaVersion>
+                        <javaVersion>11</javaVersion>
                     </runtime>
                     <appSettings>
                         <property>
